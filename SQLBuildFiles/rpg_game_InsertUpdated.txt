@@ -39,15 +39,6 @@ create table Monsters (
 	primary key (monsterID),
     	foreign key (createdBy) references users(userName));
 
-
-		
-create table EncounterMonsters (
-	monsterID		int		not null,
-    encounterID		int     not null,
-	monsterCount	int		not null,
-	primary key (monsterID, encounterID),
-    foreign key (monsterID) references monsters(monsterID));
-
 create table Encounter (
     encounterID	int		not null AUTO_INCREMENT,
 	createdBy	varchar(40)	not null,	
@@ -56,6 +47,15 @@ create table Encounter (
 	primary key (encounterID),    	
 	foreign key (createdBy) references users (username)
 ) ;
+		
+create table EncounterMonsters (
+	monsterID		int		not null,
+    encounterID		int     not null,
+	monsterCount	int		not null,
+	primary key (monsterID, encounterID),
+    foreign key (monsterID) references monsters(monsterID)),
+    foregin key (encounterID) references Encounter(EncounterID);
+
 
 create table Games (
         gameID			int	not null AUTO_INCREMENT,
