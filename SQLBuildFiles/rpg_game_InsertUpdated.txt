@@ -74,13 +74,13 @@ create table GameEncounters (
 
 
 create table Battles (
-    ForCharacterID	varchar(10),
-    ForMonsterID	varchar(10),
+    ForCharacterID	int,
+    ForMonsterID	int,
     creatureInstance	int ,
 	initiative	int,	
 	remainingHP	int		not null,
 	gameEncounterID int		not null,	
-	primary key (creatureID, gameEncounterID, creatureInstance),
+	primary key (ForCharacterID, ForMonsterID, gameEncounterID, creatureInstance),
     	foreign key (gameEncounterID) references gameEncounters (gameEncounterID)),
     	foreign key (ForCharacterID) references Characters (CharacterID)),
     	foreign key (ForMonsterID) references Monsters (MonsterID));
@@ -90,15 +90,16 @@ INSERT INTO Users
 (userName, firstName, lastName, pword, gmTools)
 values
 ('JohnB', 'John', 'Benson', 'abcd', 'true'),
-('AlyssaS', 'Alyssa', 'Smith', '2233', 'false');
+('AlyssaS', 'Alyssa', 'Smith', '2233', 'true'),
+('MikeF', 'Mike', 'Flatley', '525252', 'false');
 
 INSERT INTO Characters 
 (charName, totalHP, strength, dexterity, wisdom, constitution, intelligence, charisma, createdBy)
 values
 ('Dwan Bolduum', 39, 14, 10, 17, 17, 13,  7, 'JohnB'),
 ('Mannington Twinnings', 46, 13, 17, 12, 12, 10 , 12, 'JohnB'),
-('Jervgar', 44, 19, 17, 12, 14, 10, 19, 'AlyssaS');
-
+('Jervgar', 44, 19, 17, 12, 14, 10, 19, 'AlyssaS'),
+('Volo', 22, 11, 8, 13, 12, 16, 15, 'MikeF');
 
 INSERT INTO CharacterParty
 (gameID, characterID, earnedXp)
@@ -106,7 +107,8 @@ values
 (1, 3, 200),
 (1, 2, 150),
 (2, 1, 0),
-(2, 3, 1000);
+(2, 3, 1000),
+(1, 4, 0);
 
 INSERT INTO Monsters
 (monsterName, totalHP, experience, createdBy, isShared)
