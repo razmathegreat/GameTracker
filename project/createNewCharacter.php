@@ -7,30 +7,30 @@
     <title>Character Creation:</title>
   </head>
   <body>
-    <form action="playerView.php" method="post">
-	  <div><label for="CharName">Character Name:
-        <input type="text" name="CharName" id="CharName"></label>
+    <form action="processNewCharacter.php" method="post">
+	  <div><label for="charName">Character Name:
+        <input type="text" name="charName" id="charName"></label>
       </div>
-	  <div><label for="TotalHP">Total HP:
-        <input type="text" name="TotalHP" id="TotalHP"></label>
+	  <div><label for="totalHP">Total HP:
+        <input type="text" name="totalHP" id="totalHP"></label>
       </div>
-      <div><label for="Strength">Strength:
-        <input type="text" name="Strength" id="Strength"></label>
+      <div><label for="strength">Strength:
+        <input type="text" name="strength" id="strength"></label>
       </div>
-      <div><label for="Dexterity">Dexterity:
-        <input type="text" name="Dexterity" id="Dexterity"></label>
+      <div><label for="dexterity">Dexterity:
+        <input type="text" name="dexterity" id="dexterity"></label>
       </div>
-      <div><label for="Constitution">Constitution:
-        <input type="text" name="Constitution" id="Constitution"></label>
+      <div><label for="wisdom">Wisdom:
+        <input type="text" name="wisdom" id="wisdom"></label>
       </div>
-      <div><label for="Wisdom">Wisdom:
-        <input type="text" name="Wisdom" id="Wisdom"></label>
+      <div><label for="constitution">Constitution:
+        <input type="text" name="constitution" id="constitution"></label>
       </div>
-      <div><label for="Intelligence">Intelligence:
-        <input type="text" name="Intelligence" id="Intelligence"></label>
+      <div><label for="intelligence">Intelligence:
+        <input type="text" name="intelligence" id="intelligence"></label>
       </div>
-      <div><label for="Charisma">Charisma:
-        <input type="text" name="Charisma" id="Charisma"></label>
+      <div><label for="charisma">Charisma:
+        <input type="text" name="charisma" id="charisma"></label>
       </div>
       <div><input type="submit" value="Create"></div>
     </form>

@@ -23,31 +23,12 @@ if (isset($_GET['processNewUser']))
   exit();
 }
 
-if (isset($_GET['deleteCharacter']))
-{
-  try
-  {
-    $sql = 'DELETE FROM department WHERE dnumber = :id';
-    $s = $pdo->prepare($sql);
-    $s->bindValue(':id', $_POST['id']);
-    $s->execute();
-  }
-  catch (PDOException $e)
-  {
-    $error = 'Error deleting department: ' . $e->getMessage();
-    include 'error.html.php';
-    exit();
-  }
-
-  header('Location: .');
-  exit();
-}
 
 try
 {
 
-  $pdo = new PDO('mysql:host=localhost;dbname=company', 'test', 'test');
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'your_userName', 'your_pswd');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->exec('SET NAMES "utf8"');
 }
 catch (PDOException $e)
