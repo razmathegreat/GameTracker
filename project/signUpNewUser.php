@@ -20,6 +20,9 @@
       <div><label for="pwdHash">Password:
         <input type="text" name="pwdHash" id="pwdHash"></label>
       </div>
+      <div><label for="gmToolsMarker">Should this user have GM Tools?
+        <input type="checkbox" name="gmToolsMarker" id="gmToolsMarker"></label>
+      </div>	  
       <div><input type="submit" value="Sign Up!"></div>
     </form>
   </body>
