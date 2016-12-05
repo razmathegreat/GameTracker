@@ -52,8 +52,8 @@ create table EncounterMonsters (
     encounterID		int     not null,
 	monsterCount	int		not null,
 	primary key (monsterID, encounterID),
-    foreign key (monsterID) references monsters(monsterID)),
-    foregin key (encounterID) references Encounter(EncounterID);
+    foreign key (monsterID) references monsters(monsterID),
+    foreign key (encounterID) references Encounter(EncounterID));
 
 
 create table Games (
@@ -73,15 +73,16 @@ create table GameEncounters (
 
 
 create table Battles (
-    ForCharacterID	int,
-    ForMonsterID	int,
+    BattleCreatureID    int Auto_Increment,
+    ForCharacterID	int NULL,
+    ForMonsterID	int NULL,
     creatureInstance	int ,
 	initiative	int,	
 	remainingHP	int		not null,
 	gameEncounterID int		not null,	
-	primary key (ForCharacterID, ForMonsterID, gameEncounterID, creatureInstance),
-    	foreign key (gameEncounterID) references gameEncounters (gameEncounterID)),
-    	foreign key (ForCharacterID) references Characters (CharacterID)),
+	primary key (BattleCreatureID),
+    	foreign key (gameEncounterID) references gameEncounters (gameEncounterID),
+    	foreign key (ForCharacterID) references Characters (CharacterID),
     	foreign key (ForMonsterID) references Monsters (MonsterID));
 
 
@@ -101,13 +102,13 @@ values
 ('Volo', 22, 11, 8, 13, 12, 16, 15, 'MikeF');
 
 INSERT INTO CharacterParty
-(gameID, characterID, earnedXp)
+(gameID, characterID)
 values
-(1, 3, 200),
-(1, 2, 150),
-(2, 1, 0),
-(2, 3, 1000),
-(1, 4, 0);
+(1, 3),
+(1, 2),
+(2, 1),
+(2, 3),
+(1, 4);
 
 INSERT INTO Monsters
 (monsterName, totalHP, experience, createdBy, isShared)
@@ -117,6 +118,13 @@ values
 ('Stone Giant', 126, 2900, 'JohnB', 'true'),
 ('Red Dragon', 546, 36500, 'JohnB', 'true'),
 ('Harpy', 38, 200, 'AlyssaS', 'true');
+
+INSERT INTO encounter
+(createdBy, totalExp, isShared)
+values
+('JohnB', 2950, 'false'),
+('JohnB', 36500, 'true'),
+('AlyssaS', 1550, 'true');
 
 INSERT INTO EncounterMonsters
 (monsterID, encounterID, monsterCount)
@@ -128,12 +136,7 @@ values
 (5, 3, 2),
 (1, 3, 1);
 
-INSERT INTO encounter
-(createdBy, totalExp, isShared)
-values
-('JohnB', 2950, 'false'),
-('JohnB', 36500, 'true'),
-('AlyssaS', 1550, 'true');
+
 
 INSERT INTO Games
 (campaignName, runBy)
