@@ -23,8 +23,7 @@ create table Characters (
 
 create table CharacterParty (
         gameID          int                not null,
-        characterID     int                not null,   
-        earnedXp	int		   not null,	
+        characterID     int                not null, 	
 	primary key (gameID, characterID),
     	foreign key (characterID) references characters(characterID)
 ) ;
