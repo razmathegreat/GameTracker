@@ -26,8 +26,11 @@ catch (PDOException $e)
 //tried to include where clause that would retrieve only those made by UserName
 try
 {
-  $sql = 'SELECT * FROM characters';
-  $result = $pdo->query($sql);
+  $sql = 'SELECT * FROM characters WHERE createdBy = :userName';
+  $s = $pdo->prepare($sql);
+  $s->bindValue(':userName',$_POST["userName"]);
+  $s->execute();
+  $result = $s->fetchAll();
 }
 catch (PDOException $e)
 {

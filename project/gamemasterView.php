@@ -26,8 +26,12 @@ catch (PDOException $e)
 //tried to include where clause that would retrieve only those made by UserName
 try
 {
-  $gameSql = 'SELECT * FROM games';
-  $gameQueryResult = $pdo->query($gameSql);
+  $gameSql = 'SELECT * FROM games WHERE runBy = :userName';
+  $s = $pdo->prepare($gameSql);
+  $s->bindValue(':userName',$_POST["userName"]);
+  $s->execute();
+  $gameQueryResult  = $s->fetchAll();
+  
 }
 catch (PDOException $e)
 {
@@ -40,8 +44,11 @@ catch (PDOException $e)
 //tried to include where clause that would retrieve only those made by UserName
 try
 {
-  $encounterSql = 'SELECT * FROM encounter';
-  $encounterQueryResult = $pdo->query($encounterSql);
+  $encounterSql = 'SELECT * FROM encounter WHERE createdBy = :userName';
+  $s = $pdo->prepare($encounterSql);
+  $s->bindValue(':userName',$_POST["userName"]);
+  $s->execute();
+  $encounterQueryResult  = $s->fetchAll();  
 }
 catch (PDOException $e)
 {
@@ -54,8 +61,12 @@ catch (PDOException $e)
 //tried to include where clause that would retrieve only those made by UserName
 try
 {
-  $monsterSql = 'SELECT * FROM monsters';
-  $monsterQueryResult = $pdo->query($monsterSql);
+  $monsterSql = 'SELECT * FROM monsters WHERE createdBy = :userName';
+  $s = $pdo->prepare($monsterSql);
+  $s->bindValue(':userName',$_POST["userName"]);
+  $s->execute();
+  $monsterQueryResult  = $s->fetchAll();
+  
 }
 catch (PDOException $e)
 {
