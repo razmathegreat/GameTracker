@@ -1,4 +1,5 @@
 <?php
+
 include_once $_SERVER['DOCUMENT_ROOT'] .
     '/includes/helpers.inc.php';
 	
@@ -55,7 +56,6 @@ padding:5px;
 	  $constitution = $_GET["constitution"];
 	  $intelligence = $_GET["intelligence"];
 	  $charisma = $_GET["charisma"];
-	  $createdBy = "JohnB";
 	  
 	  
 	?>
@@ -88,7 +88,7 @@ padding:5px;
     $s->bindValue(':constitution', $_POST["constitution"]);
     $s->bindValue(':intelligence', $_POST["intelligence"]);
     $s->bindValue(':charisma', $_POST["charisma"]);
-    $s->bindValue(':createdBy', $createdBy);
+    $s->bindValue(':createdBy', $_SESSION['userName']);
     
     $s->execute();
   }

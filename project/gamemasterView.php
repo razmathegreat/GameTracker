@@ -140,6 +140,33 @@ if (isset($_GET['deleteMonster']))
   header('Location: gamemasterView.php');
   exit();
 }
+if (isset($_POST['monsterName']))
+{
+  try{
+    $addMonsterSQL = 'INSERT INTO Monsters SET
+    monsterName = :monsterName,
+    totalHP = :totalHP,
+    experience = :Experience,
+    createdBy = :userName,
+    isShared = :isShared';
+    $s = $pdo->prepare($addMonsterSql);
+    $s->bindValue(':monsterName', $_POST['monsterName']);
+    $s->bindValue(':totalHP', $_POST['totalHP']);
+    $s->bindValue(':Experience', $_POST['Experience']);
+    $s->bindValue(':userName', $userName);
+    $s->bindValue(':isShared', $_POST['isShared']);    
+    $s->execute();
+  }
+  catch (PDOException $e)
+  {
+    $error = 'Error adding monster: ' . $e->getMessage();
+    include 'error.html.php';
+    exit();
+  }
+  header('Location: .');
+  exit();
+
+}
 	
 	
 ?>

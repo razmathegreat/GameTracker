@@ -5,16 +5,20 @@ if (isset($_GET['createNewCharacter']))
   include 'createNewCharacter.php';
   exit();
 }*/
-	
+session_start();
+if (!isset($_SESSION['userName'])){
+  $_SESSION['userName'] = $_POST["userName"];
+}
 
-   $userName = $_POST["userName"];
+$userName=$_SESSION['userName'];
+
 try
 {
 
 $pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'your_userName', 'your_pswd');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->exec('SET NAMES "utf8"');
-}
+} 
 catch (PDOException $e)
 {
   $error = 'Unable to connect to the database server.';
@@ -28,7 +32,7 @@ try
 {
   $sql = 'SELECT * FROM characters WHERE createdBy = :userName';
   $s = $pdo->prepare($sql);
-  $s->bindValue(':userName',$_POST["userName"]);
+  $s->bindValue(':userName',$_SESSION['userName']);
   $s->execute();
   $result = $s->fetchAll();
 }
@@ -79,8 +83,8 @@ padding:5px;
 <body>
 
     <p><a href="?addDepartment">Add a department</a></p><br>
-    <p>Your User Name is: <?php echo $userName?></p>	<br>
-    <p>Here are all the existing characters:</p>
+    <p>Your User Name is: <?php echo $userName ?></p>	<br>
+    <p>Here are all the existing characters: </p>
    
    
     <table >
