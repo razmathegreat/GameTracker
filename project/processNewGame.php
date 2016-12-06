@@ -160,4 +160,7 @@ catch (PDOException $e)
     <?php endforeach; ?>
     </table>
   
-   </form><br><br>
+  <form action="gamemasterView.php" method="post">
+   <input type="submit" value="Back to Main Page">
+   </form><br>
+   <br><br>
