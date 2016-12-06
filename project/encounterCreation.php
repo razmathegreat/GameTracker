@@ -5,16 +5,13 @@
     <title>Encounter Creation:</title>
   </head>
   <body>
-    <form action="gmView.php" method="post">
-	  <div><label for="encounterName">Encounter Name:
-        <input type="text" name="encounterName" id="encounterName"></label>
+    <form action="processNewEncounter.php" method="post">
+	  <div><label for="description">Encounter Description:
+        <input type="text" name="description" id="description"></label>
       </div>
-      <input type="radio" name="isShared" id ="isShared"
-<?php if (isset($isShared) && $isShared=="True") ;?>
-value="true">True
-<input type="radio" name="isShared"
-<?php if (isset($isShared) && $isShared=="False") ;?>
-value="false">False
+      <div>Do you want to share this encounter with other GMs?:</div>
+        <input type="radio" name="isShared"  value="1">Yes
+        <input type="radio" name="isShared"  value="0">No
       <div><input type="submit" value="Create"></div>
     </form>
   </body>

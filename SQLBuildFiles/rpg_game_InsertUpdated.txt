@@ -40,6 +40,7 @@ create table Monsters (
 
 create table Encounter (
     encounterID	int		not null AUTO_INCREMENT,
+	description	varchar(40),
 	createdBy	varchar(40)	not null,	
 	totalExp	int,
 	isShared	BOOLEAN 	not null,
@@ -89,9 +90,9 @@ create table Battles (
 INSERT INTO Users
 (userName, firstName, lastName, pword, gmTools)
 values
-('JohnB', 'John', 'Benson', 'abcd', 'true'),
-('AlyssaS', 'Alyssa', 'Smith', '2233', 'true'),
-('MikeF', 'Mike', 'Flatley', '525252', 'false');
+('JohnB', 'John', 'Benson', 'abcd', '1'),
+('AlyssaS', 'Alyssa', 'Smith', '2233', '1'),
+('MikeF', 'Mike', 'Flatley', '525252', '0');
 
 INSERT INTO Characters 
 (charName, totalHP, strength, dexterity, wisdom, constitution, intelligence, charisma, createdBy)
@@ -113,18 +114,18 @@ values
 INSERT INTO Monsters
 (monsterName, totalHP, experience, createdBy, isShared)
 values
-('Goblin', 7, 50, 'AlyssaS', 'true'),
-('Draxx, Orc Warchief', 93, 1100, 'AlyssaS', 'false'),
-('Stone Giant', 126, 2900, 'JohnB', 'true'),
-('Red Dragon', 546, 36500, 'JohnB', 'true'),
-('Harpy', 38, 200, 'AlyssaS', 'true');
+('Goblin', 7, 50, 'AlyssaS', '1'),
+('Draxx, Orc Warchief', 93, 1100, 'AlyssaS', '0'),
+('Stone Giant', 126, 2900, 'JohnB', '1'),
+('Red Dragon', 546, 36500, 'JohnB', '1'),
+('Harpy', 38, 200, 'AlyssaS', '1');
 
 INSERT INTO encounter
-(createdBy, totalExp, isShared)
+(createdBy, description, totalExp, isShared)
 values
-('JohnB', 2950, 'false'),
-('JohnB', 36500, 'true'),
-('AlyssaS', 1550, 'true');
+('JohnB', 'Giant w/ Goblin', 2950, '0'),
+('JohnB', 'Red Dragon Boss', 36500, '1'),
+('AlyssaS', 'Draxx company', 1550, '1');
 
 INSERT INTO EncounterMonsters
 (monsterID, encounterID, monsterCount)

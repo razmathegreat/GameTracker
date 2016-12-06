@@ -215,7 +215,7 @@ padding:5px;
     <?php endforeach; ?>
     </table>
 	
-   <form action="createNewEncounter.php" method="post">
+   <form action="encounterCreation.php" method="post">
    <input type="submit" value="Create New Encounter">
    </form><br><br>
    

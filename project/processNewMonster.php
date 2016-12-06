@@ -44,7 +44,7 @@ padding:5px;
 </head>
 <body>
 
-    <p>UPDATED Processing New Monster...</p><br>
+    <p>Processing New Monster...</p><br>
 	
 	<?php
     $pwdHash = $_GET['pwdHash'];
