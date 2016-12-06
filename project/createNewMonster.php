@@ -1,3 +1,7 @@
+<?php 
+session_start();
+$userName = $_SESSION['userName'];
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,7 +9,7 @@
     <title>Monster Creation:</title>
   </head>
   <body>
-    <form action="gmView.php" method="post">
+    <form action="processNewMonster.php" method="post">
 	  <div><label for="monsterName">Monster Name:
         <input type="text" name="monsterName" id="monsterName"></label>
       </div>
@@ -15,15 +19,15 @@
       <div><label for="Experience">Experience granted:
         <input type="text" name="Experience" id="Experience"></label>
       </div>
-      
-<input type="radio" name="isShared" id ="isShared"
-<?php if (isset($isShared) && $isShared=="True") echo "checked";?>
-value="true">True
-<input type="radio" name="isShared"
-<?php if (isset($isShared) && $isShared=="False") echo "checked";?>
-value="false">False
+      <div>Share with all GMs?:</div>
+        <input type="radio" name="isShared"  value="true">Yes
+        <input type="radio" name="isShared"  value="false">No
      
       <div><input type="submit" value="Create"></div>
+    </form>
+     <br />
+    <form action="gamemasterview.php" method="post">
+      <input type="submit" value = "Go Back">
     </form>
   </body>
 </html>

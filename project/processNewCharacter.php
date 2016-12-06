@@ -10,6 +10,9 @@ ob_start();
 include 'playerView.php';
 ob_clean();
 
+session_start();
+$userName = $_SESSION['userName'];
+
 try
 {
 

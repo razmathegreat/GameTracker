@@ -5,7 +5,9 @@ if (isset($_GET['createNewCharacter']))
   include 'createNewCharacter.php';
   exit();
 }*/
-session_start();
+if (!session_id()) {
+    session_start();
+  }
 if (!isset($_SESSION['userName'])){
   $_SESSION['userName'] = $_POST["userName"];
 }

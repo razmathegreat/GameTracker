@@ -6,8 +6,15 @@ if (isset($_GET['createNewCharacter']))
   exit();
 }*/
 	
+if (!session_id()) {
+    session_start();
+  }
+if (!isset($_SESSION['userName'])){
+  $_SESSION['userName'] = $_POST["userName"];
+}
 
-   $userName = $_POST["userName"];
+$userName=$_SESSION['userName'];
+
 try
 {
 
@@ -28,7 +35,7 @@ try
 {
   $gameSql = 'SELECT * FROM games WHERE runBy = :userName';
   $s = $pdo->prepare($gameSql);
-  $s->bindValue(':userName',$_POST["userName"]);
+  $s->bindValue(':userName',$_SESSION["userName"]);
   $s->execute();
   $gameQueryResult  = $s->fetchAll();
   
@@ -46,7 +53,7 @@ try
 {
   $encounterSql = 'SELECT * FROM encounter WHERE createdBy = :userName';
   $s = $pdo->prepare($encounterSql);
-  $s->bindValue(':userName',$_POST["userName"]);
+  $s->bindValue(':userName',$_SESSION["userName"]);
   $s->execute();
   $encounterQueryResult  = $s->fetchAll();  
 }
@@ -63,7 +70,7 @@ try
 {
   $monsterSql = 'SELECT * FROM monsters WHERE createdBy = :userName';
   $s = $pdo->prepare($monsterSql);
-  $s->bindValue(':userName',$_POST["userName"]);
+  $s->bindValue(':userName',$_SESSION["userName"]);
   $s->execute();
   $monsterQueryResult  = $s->fetchAll();
   
@@ -140,35 +147,7 @@ if (isset($_GET['deleteMonster']))
   header('Location: gamemasterView.php');
   exit();
 }
-if (isset($_POST['monsterName']))
-{
-  try{
-    $addMonsterSQL = 'INSERT INTO Monsters SET
-    monsterName = :monsterName,
-    totalHP = :totalHP,
-    experience = :Experience,
-    createdBy = :userName,
-    isShared = :isShared';
-    $s = $pdo->prepare($addMonsterSql);
-    $s->bindValue(':monsterName', $_POST['monsterName']);
-    $s->bindValue(':totalHP', $_POST['totalHP']);
-    $s->bindValue(':Experience', $_POST['Experience']);
-    $s->bindValue(':userName', $userName);
-    $s->bindValue(':isShared', $_POST['isShared']);    
-    $s->execute();
-  }
-  catch (PDOException $e)
-  {
-    $error = 'Error adding monster: ' . $e->getMessage();
-    include 'error.html.php';
-    exit();
-  }
-  header('Location: .');
-  exit();
 
-}
-	
-	
 ?>
 
 
