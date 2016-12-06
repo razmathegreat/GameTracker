@@ -192,7 +192,7 @@ padding:5px;
     <?php endforeach; ?>
     </table>
 	
-   <form action="createNewGame.php" method="post">
+   <form action="gameCreation.php" method="post">
    <input type="submit" value="Create New Game">
    </form><br><br>
    

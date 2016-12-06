@@ -44,7 +44,7 @@ padding:5px;
 </head>
 <body>
 
-    <p>Processing New Encounter...888</p><br>
+    <p>Processing New Encounter...</p><br>
 	
 	<?php
     $pwdHash = $_GET['pwdHash'];
@@ -152,8 +152,7 @@ if (isset($_GET['addMonster'])){
   <head>
     <meta charset="utf-8">
     <title>Encounter Creation:</title>
-  </head>
-  <body><?php echo $_SESSION['thisEncounter']; ?></body>
+  </head>  
      <table >
       <tr>
       <th style= "width:50px">ID</th>
