@@ -1,4 +1,5 @@
 <?php 
+session_destroy();
 include_once $_SERVER['DOCUMENT_ROOT'] .
     '/includes/helpers.inc.php'; 
 include_once $_SERVER['DOCUMENT_ROOT'] .

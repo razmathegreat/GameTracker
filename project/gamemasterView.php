@@ -51,7 +51,7 @@ catch (PDOException $e)
 //tried to include where clause that would retrieve only those made by UserName
 try
 {
-  $encounterSql = 'SELECT * FROM encounter WHERE createdBy = :userName';
+  $encounterSql = 'SELECT * FROM encounter WHERE createdBy = :userName OR isShared like 1';
   $s = $pdo->prepare($encounterSql);
   $s->bindValue(':userName',$_SESSION["userName"]);
   $s->execute();
@@ -68,7 +68,7 @@ catch (PDOException $e)
 //tried to include where clause that would retrieve only those made by UserName
 try
 {
-  $monsterSql = 'SELECT * FROM monsters WHERE createdBy = :userName';
+  $monsterSql = 'SELECT * FROM monsters WHERE createdBy = :userName OR isShared like 1';
   $s = $pdo->prepare($monsterSql);
   $s->bindValue(':userName',$_SESSION["userName"]);
   $s->execute();
@@ -145,6 +145,12 @@ if (isset($_GET['deleteMonster']))
   }
 
   header('Location: gamemasterView.php');
+  exit();
+}
+
+if (isset($_GET['logOff'])){
+  unset($_SESSION['userName']);
+  header ('Location: index.php');
   exit();
 }
 
@@ -252,7 +258,7 @@ padding:5px;
    
    
    
-	<form action="index.php" method="post">
+	<form action="?logOff" method="post">
    <input type="submit" value="Log Out">
    </form><br>
 	

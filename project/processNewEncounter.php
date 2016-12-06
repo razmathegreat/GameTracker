@@ -121,10 +121,26 @@ if (isset($_GET['addMonster'])){
   }
   catch (PDOException $e)
   {
-    $error = 'Error adding new encounter: ' . $e->getMessage();
+    $error = 'Error adding monsters to encounter: ' . $e->getMessage();
     include 'error.html.php';
     exit();
   }
+
+  try{
+    $updateEpxSQL = 'UPDATE encounter SET totalEXP = (Select SUM(experience * monsterCount) as encounterExp FROM monsters m JOIN encountermonsters em on m.monsterID=em.monsterID where encounterID=:encounterID Group BY encounterID) where   encounterid = :encounterID';
+
+    $s = $pdo->prepare($updateEpxSQL);
+    $s->bindValue(':encounterID', $_SESSION['thisEncounter']);
+
+    $s->execute();
+
+  }
+  catch (PDOException $e){
+    $error = 'Error updating encounter experience: ' .$e->getMessage();
+    include 'error.html.php';
+    exit();
+  }
+
   header('Location: processNewEncounter.php');
 }
 
@@ -163,7 +179,9 @@ if (isset($_GET['addMonster'])){
         <?php endforeach; ?>
         </table>
 
-
+<form action="gamemasterView.php" method="post">
+   <input type="submit" value="Back to Main Page">
+   </form><br>
 
   <body>
     
