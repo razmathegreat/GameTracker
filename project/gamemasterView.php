@@ -185,7 +185,7 @@ padding:5px;
       <td style= "width:150px"> <?php echo $game['campaignName']; ?> </td>
       <td>  
          <form action="gameView.php" method="post">
-          <input type="hidden" name="id" value="<?php echo $game['gameID']; ?>">
+          <input type="hidden" name="gameID" value="<?php echo $game['gameID']; ?>">
          <input type="submit" value="Access">
         </form>
       </td>

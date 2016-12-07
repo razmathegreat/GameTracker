@@ -2,12 +2,15 @@
 <?php 
 session_start();
 $userName = $_SESSION['userName'];
-$_SESSION['gameID'] = $_POST['gameID'];
+if (!isset($_SESSION['gameID'])){
+  $_SESSION['gameID'] = $_POST["gameID"];
+}
+
 
 try
 {
 
-  $pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'username', 'password');
+  $pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'userName', 'password');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->exec('SET NAMES "utf8"');
 }
@@ -18,11 +21,84 @@ catch (PDOException $e)
   exit();
 }
 
+//Get Game info
+try
+{
+  $gameSql = 'SELECT * FROM games WHERE gameID = :gameID';
+  $s = $pdo->prepare($gameSql);
+  $s->bindValue(':gameID',$_SESSION['gameID']);
+  $s->execute();
+  $gameQuery  = $s->fetchAll();
+  
+}
+catch (PDOException $e)
+{
+  $error = 'Error fetching games: ' . $e->getMessage();
+  include 'error.html.php';
+  exit();
+}
+
+try
+{
+  $partySql = 'SELECT * FROM characters WHERE characterID IN (SELECT characterID FROM CharacterParty where gameID = :gameID)';
+  $s = $pdo->prepare($partySql);
+  $s->bindValue(':gameID',$_SESSION['gameID']);
+  $s->execute();
+  $partyQuery  = $s->fetchAll();
+  
+}
+catch (PDOException $e)
+{
+  $error = 'Error fetching party: ' . $e->getMessage();
+  include 'error.html.php';
+  exit();
+}
+
+try
+{
+  $gESql = 'SELECT * FROM gameEncounters ge JOIN encounter e ON ge.encounterid =e.encounterID WHERE gameID = :gameID';
+  $s = $pdo->prepare($gESql);
+  $s->bindValue(':gameID',$_SESSION['gameID']);
+  $s->execute();
+  $encounterQuery  = $s->fetchAll();
+  
+}
+catch (PDOException $e)
+{
+  $error = 'Error fetching game encounters: ' . $e->getMessage();
+  include 'error.html.php';
+  exit();
+}
+
+if (isset($_GET['deleteGEncounter'])){
+  try{
+    $delEncounterSql ='DELETE FROM gameEncounters WHERE gameEncounterID = :gameEncounterID';
+    $s = $pdo->prepare($delEncounterSql);
+    $s->bindValue(':gameEncounterID',$_POST['id']);
+    $s->execute();
+
+  }
+  catch (PDOException $e){
+    $error = 'Error deleting encounter ' . $e->getMessage();
+    include 'error.html.php';
+    exit();
+  }
+  header('Location: gameView.php');
+  exit();
+}
+
+if (isset($_GET['goBack'])){
+  unset($_SESSION['gameID']);
+  header ('Location: gamemasterView.php');
+  exit();
+}
+
+
 ?>
 
 <html>
 <head>
-<title>Game Master View</title>
+<title>Game Instance View</title>
 <style>
 table,th,td
 {
@@ -31,107 +107,62 @@ padding:5px;
 }
 </style>
 </head>
-<body>
+<body> 
 
-    <p>Here are the existing Games:</p>
+    <?php foreach ($gameQuery as $game): ?>
+    <p><h1><u><?php echo $game['campaignName']; ?> </u></h1></p>
+    <?php endforeach;?> 
+    <h3>Party</h3>
    
     <table >
 	<tr>
-	<th style= "width:50px">ID</th>
-	<th style= "width:50px">Campaign Name</th>
-	<th style= "width:50px">Campaign Details</th>
-  <th style= "width:50px">Delete</th>
-	</tr>
-    <?php foreach ($gameQueryResult as $game): ?>
-      <tr>
-      <td> <?php echo $game['gameID']; ?> </td>
-      <td style= "width:150px"> <?php echo $game['campaignName']; ?> </td>
-      <td>  
-         <form action="gameView.php" method="post">
-          <input type="hidden" name="id" value="<?php echo $game['gameID']; ?>">
-         <input type="submit" value="Access">
-        </form>
-      </td>
-      <td>  
-         <form action="?deleteGame" method="post">
-          <input type="hidden" name="id" value="<?php echo $game['gameID']; ?>">
-         <input type="submit" value="Delete">
-        </form>
-      </td>
-      </tr>
-    <?php endforeach; ?>
-    </table>
-	
-   <form action="gameCreation.php" method="post">
-   <input type="submit" value="Create New Game">
-   </form><br><br>
-   
-   
-   <p>Here are the existing Encounters:</p>
-   
-    <table >
-	<tr>
-	<th style= "width:50px">ID</th>
-	<th style= "width:50px">Created By</th>
-	<th style= "width:50px">Total Exp</th>
-	<th style= "width:50px">Delete</th>
-	</tr>
-    <?php foreach ($encounterQueryResult as $encounter): ?>
-      <tr>
-      <td> <?php echo $encounter['encounterID']; ?> </td>
-       <td style= "width:50px"> <?php echo $encounter['createdBy']; ?> </td>
-       <td style= "width:50px"> <?php echo $encounter['totalExp']; ?> </td>
-         <td>  
-         <form action="?deleteEncounter" method="post">
-          <input type="hidden" name="id" value="<?php echo $encounter['encounterID']; ?>">
-         <input type="submit" value="Delete">
-        </form>
-      </td>
-      </tr>
-    <?php endforeach; ?>
-    </table>
-	
-   <form action="encounterCreation.php" method="post">
-   <input type="submit" value="Create New Encounter">
-   </form><br><br>
-   
-   <p>Here are the existing Monsters:</p>
-   
-    <table >
-	<tr>
-	<th style= "width:50px">ID</th>
-	<th style= "width:150px">Name</th>
+	<th style= "width:50px">Character Name</th>
 	<th style= "width:50px">Total HP</th>
-	<th style= "width:50px">Experience</th>
-	<th style= "width:50px">Delete</th>
+	<th style= "width:50px">Player</th>
+  
 	</tr>
-    <?php foreach ($monsterQueryResult as $monster): ?>
+    <?php foreach ($partyQuery as $partyMember): ?>
       <tr>
-      <td> <?php echo $monster['monsterID']; ?> </td>
-       <td style= "width:150px"> <?php echo $monster['monsterName']; ?> </td>
-       <td style= "width:50px"> <?php echo $monster['totalHP']; ?> </td>
-       <td style= "width:50px"> <?php echo $monster['experience']; ?> </td>
-         <td>  
-         <form action="?deleteMonster" method="post">
-          <input type="hidden" name="id" value="<?php echo $monster['monsterID']; ?>">
+      <td> <?php echo $partyMember['charName']; ?> </td>
+      <td style= "width:150px"> <?php echo $partyMember['totalHP']; ?> </td>
+      <td style= "width:150px"> <?php echo $partyMember['createdBy']; ?> </td>
+      </tr>
+    <?php endforeach; ?>
+    </table>
+    
+    <h3>Planned Encounters</h3>
+   
+    <table >
+  <tr>
+  <th style= "width:50px">Description</th>
+  <th style= "width:50px">Total Experience</th>
+  <th style= "width:50px">Delete</th>
+  <th style= "width:50px">Battle</th>
+  
+  </tr>
+    <?php foreach ($encounterQuery as $gEncounter): ?>
+      <tr>
+      <td> <?php echo $gEncounter['description']; ?> </td>
+      <td style= "width:150px"> <?php echo $gEncounter['totalExp']; ?> </td>      
+      <td>  
+         <form action="?deleteGEncounter" method="post">
+          <input type="hidden" name="id" value="<?php echo $gEncounter['gameEncounterID']; ?>">
          <input type="submit" value="Delete">
+        </form>
+      </td>
+      <td>  
+         <form action="trackBattle.php" method="post">
+          <input type="hidden" name="gameEncounterID" value="<?php echo $gEncounter['gameEncounterID']; ?>">
+         <input type="submit" value="Track Battle">
         </form>
       </td>
       </tr>
     <?php endforeach; ?>
     </table>
-	
-   <form action="createNewMonster.php" method="post">
-   <input type="submit" value="Create New Monster">
+    <form action="addGameEncounter.php" method="post">
+   <input type="submit" value="Prepare Encounters">
    </form><br><br>
-   
-   
-   
-   
-	<form action="?logOff" method="post">
-   <input type="submit" value="Log Out">
+   <form action="?goBack" method="post">
+   <input type="submit" value="Back to Main Page">
    </form><br>
-	
-   
-  </body>
-</html>
+   <br><br>

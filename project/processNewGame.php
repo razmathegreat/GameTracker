@@ -90,7 +90,7 @@ padding:5px;
   }
   catch (PDOException $e)
   {
-    $error = 'Error retrieving encounterID: ' . $e->getMessage();
+    $error = 'Error retrieving gameID: ' . $e->getMessage();
     include 'error.html.php';
     exit();
   }
@@ -135,6 +135,7 @@ catch (PDOException $e)
 }
 
 	?>
+  
 <body>Please select characters to add to <?php echo $_POST['campaignName']?>: </body>
   
 	<table >
