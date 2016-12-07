@@ -1,24 +1,13 @@
-<?php
-/*
-if (isset($_GET['createNewCharacter']))
-{
-  include 'createNewCharacter.php';
-  exit();
-}*/
-	
-if (!session_id()) {
-    session_start();
-  }
-if (!isset($_SESSION['userName'])){
-  $_SESSION['userName'] = $_POST["userName"];
-}
 
-$userName=$_SESSION['userName'];
+<?php 
+session_start();
+$userName = $_SESSION['userName'];
+$_SESSION['gameID'] = $_POST['gameID'];
 
 try
 {
 
-  $pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'MFlatley', 'Flatley0');
+  $pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'username', 'password');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->exec('SET NAMES "utf8"');
 }
@@ -29,133 +18,7 @@ catch (PDOException $e)
   exit();
 }
 
-//sql statement to retrieve all games to be displayed in table 
-//tried to include where clause that would retrieve only those made by UserName
-try
-{
-  $gameSql = 'SELECT * FROM games WHERE runBy = :userName';
-  $s = $pdo->prepare($gameSql);
-  $s->bindValue(':userName',$_SESSION["userName"]);
-  $s->execute();
-  $gameQueryResult  = $s->fetchAll();
-  
-}
-catch (PDOException $e)
-{
-  $error = 'Error fetching games: ' . $e->getMessage();
-  include 'error.html.php';
-  exit();
-}
-
-//sql statement to retrieve all encounters to be displayed in table 
-//tried to include where clause that would retrieve only those made by UserName
-try
-{
-  $encounterSql = 'SELECT * FROM encounter WHERE createdBy = :userName OR isShared like 1';
-  $s = $pdo->prepare($encounterSql);
-  $s->bindValue(':userName',$_SESSION["userName"]);
-  $s->execute();
-  $encounterQueryResult  = $s->fetchAll();  
-}
-catch (PDOException $e)
-{
-  $error = 'Error fetching encounters: ' . $e->getMessage();
-  include 'error.html.php';
-  exit();
-}
-
-//sql statement to retrieve all monsters to be displayed in table 
-//tried to include where clause that would retrieve only those made by UserName
-try
-{
-  $monsterSql = 'SELECT * FROM monsters WHERE createdBy = :userName OR isShared like 1';
-  $s = $pdo->prepare($monsterSql);
-  $s->bindValue(':userName',$_SESSION["userName"]);
-  $s->execute();
-  $monsterQueryResult  = $s->fetchAll();
-  
-}
-catch (PDOException $e)
-{
-  $error = 'Error fetching monsters: ' . $e->getMessage();
-  include 'error.html.php';
-  exit();
-}
-
-
-
-//sql statement for when user wishes to delete a game
-if (isset($_GET['deleteGame']))
-{
-  try
-  {
-    $deleteGameSql = 'DELETE FROM games WHERE gameID = :id';
-    $s = $pdo->prepare($deleteGameSql);
-    $s->bindValue(':id', $_POST['id']);
-    $s->execute();
-  }
-  catch (PDOException $e)
-  {
-    $error = 'Error deleting game: ' . $e->getMessage();
-    include 'error.html.php';
-    exit();
-  }
-
-  header('Location: gamemasterView.php');
-  exit();
-}
-	
-//sql statement for when user wishes to delete an encounter
-if (isset($_GET['deleteEncounter']))
-{
-  try
-  {
-    $deleteEncounterSql = 'DELETE FROM encounter WHERE encounterID = :id';
-    $s = $pdo->prepare($deleteEncounterSql);
-    $s->bindValue(':id', $_POST['id']);
-    $s->execute();
-  }
-  catch (PDOException $e)
-  {
-    $error = 'Error deleting encounter: ' . $e->getMessage();
-    include 'error.html.php';
-    exit();
-  }
-
-  header('Location: gamemasterView.php');
-  exit();
-}
-
-
-//sql statement for when user wishes to delete a monster
-if (isset($_GET['deleteMonster']))
-{
-  try
-  {
-    $deleteMonsterSql = 'DELETE FROM monsters WHERE monsterID = :id';
-    $s = $pdo->prepare($deleteMonsterSql);
-    $s->bindValue(':id', $_POST['id']);
-    $s->execute();
-  }
-  catch (PDOException $e)
-  {
-    $error = 'Error deleting monster: ' . $e->getMessage();
-    include 'error.html.php';
-    exit();
-  }
-
-  header('Location: gamemasterView.php');
-  exit();
-}
-
-if (isset($_GET['logOff'])){
-  unset($_SESSION['userName']);
-  header ('Location: index.php');
-  exit();
-}
-
 ?>
-
 
 <html>
 <head>
