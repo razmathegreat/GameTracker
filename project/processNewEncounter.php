@@ -171,7 +171,7 @@ if (isset($_GET['addMonster'])){
              <form action="?addMonster" method="post">
               <input type="text" name="monsterCount" id="monsterCount"></label>
               <input type="hidden" name="monsterID" value="<?php echo $monster['monsterID']; ?>">
-             <input type="submit" value="add">
+             <input type="submit" value="Add to Encounter">
             </form>
           </td>
           </tr>

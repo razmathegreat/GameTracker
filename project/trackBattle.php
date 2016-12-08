@@ -113,7 +113,7 @@ if (isset($_GET['updateStats']))
 
 //select data from battles table
 try{
-	$selBattleSQL = 'SELECT battleCreatureID, charName, monsterName, creatureInstance, initiative, remainingHP FROM Battles b LEFT JOIN characters c on b.ForCharacterID = c.characterID Left JOIN monsters m ON b.ForMonsterID = m.monsterID WHERE gameEncounterID = :gameEncounterID ORDER BY initiative DESC' ;
+	$selBattleSQL = 'SELECT battleCreatureID, charName, monsterName, creatureInstance, initiative, remainingHP FROM Battles b LEFT JOIN characters c on b.ForCharacterID = c.characterID Left JOIN monsters m ON b.ForMonsterID = m.monsterID WHERE gameEncounterID = :gameEncounterID ORDER BY initiative DESC, charName, monsterName, creatureInstance' ;
 
 	$s = $pdo->prepare($selBattleSQL);
 	$s->bindValue(':gameEncounterID', $_SESSION['gameEncounterID']);
@@ -158,7 +158,6 @@ padding:5px;
 	<tr>
 	<th style= "width:50px">Character Name</th>
 	<th style= "width:50px">Monster Name</th>
-	<th style= "width:50px">Monster Instance</th>
 	<th style= "width:50px">Initiative</th>
 	<th style= "width:50px">Remaining HP</th>
 	<th style= "width:50px">Update</th>
@@ -167,8 +166,8 @@ padding:5px;
     <?php foreach ($getBattleInfo as $battle): ?>
       <tr>
       <td style= "width:150px"> <?php echo $battle['charName']; ?> </td>
-      <td style= "width:150px"> <?php echo $battle['monsterName']; ?> </td>
-      <td > <?php echo $battle['creatureInstance']; ?> </td>
+      <td style= "width:150px"> <?php echo $battle['monsterName'].' '; echo $battle['creatureInstance']; ?> </td>
+      
       <form action="?updateStats" method="post">
       <td > <input type="text" name="initiative" value="<?php echo $battle['initiative']?>"></td>
       <td > <input type="text" name="remainingHP" value="<?php echo $battle['remainingHP']?>"></td>
