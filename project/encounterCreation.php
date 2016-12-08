@@ -14,6 +14,10 @@
         <input type="radio" name="isShared"  value="0">No
       <div><input type="submit" value="Create"></div>
     </form>
+    <form action="gamemasterView.php" method="post">
+   <input type="submit" value="Back to Main Page">
+   </form><br>
+
   </body>
 </html>
 
