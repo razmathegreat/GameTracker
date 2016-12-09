@@ -3,7 +3,7 @@ create table Users (
 	firstName       varchar(40)  not null,
 	lastName        varchar(40)  not null,
 	pword			varchar(40)  not null,
-    gmTools 		BOOLEAN	     not null,	
+    gmTools 		int,	
 	primary key (userName));
 
 create table Characters (

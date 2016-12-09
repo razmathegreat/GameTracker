@@ -7,23 +7,26 @@
     <title>New User creation</title>
   </head>
   <body>
-    <form action="index.php" method="post">
+    <form action="processNewUser.php" method="post">
 	  <div><label for="firstName">First Name:
         <input type="text" name="firstName" id="firstName"></label>
       </div>
 	  <div><label for="lastName">Last Name:
-        <input type="text" name="LastName" id="LastName"></label>
+        <input type="text" name="lastName" id="lastName"></label>
       </div>
-      <div><label for="userName">User Name:
+	  <div><label for="userName">User Name:
         <input type="text" name="userName" id="userName"></label>
+      </div>  
+      <div><label for="pword">Password:
+        <input type="text" name="pword" id="pword"></label>
       </div>
-      <div><label for="pwdHash">Password:
-        <input type="text" name="pwdHash" id="pwdHash"></label>
-      </div>
-      <div><label for="gmToolsMarker">Should this user have GM Tools?
-        <input type="checkbox" name="gmToolsMarker" id="gmToolsMarker"></label>
+      <div><label for="gmTools	">Should this user have GM Tools?
+        <input type="checkbox" name="gmTools" value="1" id="gmTools"></label>
       </div>	  
       <div><input type="submit" value="Sign Up!"></div>
     </form>
+	<form action="index.php" method="post">
+   <input type="submit" value="Back to User Login">
+   </form><br>
   </body>
 </html>
