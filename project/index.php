@@ -28,7 +28,7 @@ if (isset($_GET['processNewUser']))
 try
 {
 
-$pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'your_userName', 'your_pswd');
+  $pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'sahmed18', 'adamantium6');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->exec('SET NAMES "utf8"');
 }

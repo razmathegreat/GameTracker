@@ -12,12 +12,11 @@ if (!isset($_SESSION['userName'])){
   $_SESSION['userName'] = $_POST["userName"];
 }
 
-$userName=$_SESSION['userName'];
-
+$userName=$_SESSION['userName'];;
 try
 {
 
-$pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'your_userName', 'your_pswd');
+  $pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'your_username', 'your_Pword');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->exec('SET NAMES "utf8"');
 } 
@@ -27,6 +26,69 @@ catch (PDOException $e)
   include 'error.html.php';
   exit();
 }
+
+//userName check 
+/*try
+{
+  $sql = 'SELECT userName FROM users WHERE userName = :userName';
+  $s = $pdo->prepare($sql);
+  $s->bindValue(':userName',$_POST["userName"]);
+  $s->execute();
+  $userCheck = $s->fetchAll();
+}
+catch (PDOException $e)
+{*/
+	/*
+  $error = 'Error fetching user: ' . $e->getMessage();
+  include 'error.html.php';
+  exit();*/
+  /*$error = 'Error: No such user exists '. $e->getMessage(); // . $e->getMessage()
+  unset($_SESSION['userName']);
+  include 'invalidUser.error.html.php';
+  exit();
+}*/
+/*
+if($userCheck ==NULL){
+	
+  $error = 'Error: No such user exists'; // . $e->getMessage()
+  unset($_SESSION['userName']);
+  include 'invalidUser.error.html.php';
+}
+else {
+
+}*/
+/*
+try
+{
+  $sql = 'SELECT userName, pword FROM users WHERE userName = :userName';
+  $s = $pdo->prepare($sql);
+  $s->bindValue(':userName',$_POST["userName"]);
+  $s->bindValue(':pword',$_POST["pword"]);
+  $s->execute();
+  $userCheck = $s->fetchAll();
+}
+catch (PDOException $e)
+{
+	/*
+  $error = 'Error fetching user: ' . $e->getMessage();
+  include 'error.html.php';
+  exit();*/
+  /*$error = 'Error: No such user exists '. $e->getMessage(); // . $e->getMessage()
+  unset($_SESSION['userName']);
+  include 'invalidUser.error.html.php';
+  exit();
+}*/
+
+
+
+
+if (isset($_GET['logOff'])){
+  unset($_SESSION['userName']);
+  header ('Location: index.php');
+  exit();
+}
+
+
 
 //sql statement to retrieve all characters to be displayed in table 
 //tried to include where clause that would retrieve only those made by UserName
@@ -40,7 +102,7 @@ try
 }
 catch (PDOException $e)
 {
-  $error = 'Error fetching departments: ' . $e->getMessage();
+  $error = 'Error fetching characters: ' . $e->getMessage();
   include 'error.html.php';
   exit();
 }
@@ -73,7 +135,7 @@ if (isset($_GET['deleteChar']))
 
 <html>
 <head>
-<title>List of Departments</title>
+<title>List of Characters</title>
 <style>
 table,th,td
 {
@@ -84,7 +146,6 @@ padding:5px;
 </head>
 <body>
 
-    <p><a href="?addDepartment">Add a department</a></p><br>
     <p>Your User Name is: <?php echo $userName ?></p>	<br>
     <p>Here are all the existing characters: </p>
    
@@ -127,10 +188,10 @@ padding:5px;
    <input type="submit" value="Create New Character">
    </form><br>
    
-	<form action="index.php" method="post">
+	
+	<form action="?logOff" method="post">
    <input type="submit" value="Log Out">
    </form><br>
-	
    
   </body>
 </html>

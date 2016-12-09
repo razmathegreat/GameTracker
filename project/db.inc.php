@@ -1,7 +1,7 @@
 <?php
 try
 {
-$pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'your_userName', 'your_pswd');
+  $pdo = new PDO('mysql:host=localhost;dbname=gmtracker', 'your_username', 'your_Pword');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->exec('SET NAMES "utf8"');
 }
