@@ -35,6 +35,8 @@ if (!isset($_SESSION['gameEncounterID'])){
 	}
 	//Add monsters & characters into battles table
 	try{
+		$pdo->beginTransaction();
+
 		$prepMonSQL = 'SELECT monsterID, monsterCount, em.encounterID AS encounterID FROM encountermonsters em
 		join gameencounters ge on ge.encounterID=em.encounterID
 		where gameEncounterID = :gameEncounterID';
@@ -43,6 +45,11 @@ if (!isset($_SESSION['gameEncounterID'])){
 		$mPrep->bindValue(':gameEncounterID', $_SESSION['gameEncounterID']);
 		$mPrep->execute();
 		$getMonResults = $mPrep->fetchAll();
+
+		if(empty($getMonResults)){
+			echo 'Unable to find any monsters';
+			return false;
+		}
 
 		foreach ($getMonResults as $monster): 
 			$count = $monster['monsterCount'];
@@ -72,10 +79,13 @@ if (!isset($_SESSION['gameEncounterID'])){
 	    
 	    $s->execute();
 
+	    $pdo->commit();
+
 
 
 	}
 	catch (PDOException $e){
+		$pdo->rollback();
 		$error = 'Unable to create battle ' .$e->getMessage();
 		include 'error.html.php';
 	    exit();

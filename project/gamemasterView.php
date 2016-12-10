@@ -13,6 +13,7 @@ if (!session_id()) {
 //if coming from the login page clear out any existing userNames.
 if (isset($_POST['pwdHash'])){
  unset($_SESSION['userName']);
+}
 
 if (!isset($_SESSION['userName'])){
   $_SESSION['userName'] = $_POST["userName"];
