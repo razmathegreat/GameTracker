@@ -72,7 +72,7 @@ padding:5px;
     $s->bindValue(':userName', $_POST["userName"]);
     $s->bindValue(':firstName', $_POST["firstName"]);
     $s->bindValue(':lastName', $_POST["lastName"]);
-    $s->bindValue(':pword', $_POST["pword"]);
+    $s->bindValue(':pword', password_hash($_POST['pword'],PASSWORD_DEFAULT));
     $s->bindValue(':gmTools', $_POST["gmTools"]);
     
     $s->execute();

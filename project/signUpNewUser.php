@@ -21,7 +21,8 @@
         <input type="text" name="pword" id="pword"></label>
       </div>
       <div><label for="gmTools	">Should this user have GM Tools?
-        <input type="checkbox" name="gmTools" value="1" id="gmTools"></label>
+        <input type="radio" name="gmTools"  value="1">Yes
+        <input type="radio" name="gmTools"  value="0">No
       </div>	  
       <div><input type="submit" value="Sign Up!"></div>
     </form>

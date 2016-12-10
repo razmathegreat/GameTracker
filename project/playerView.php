@@ -8,6 +8,10 @@ if (isset($_GET['createNewCharacter']))
 if (!session_id()) {
     session_start();
   }
+//if coming from the login page clear out any existing userNames.
+if (isset($_POST['pwdHash'])){
+ unset($_SESSION['userName']);
+}
 if (!isset($_SESSION['userName'])){
   $_SESSION['userName'] = $_POST["userName"];
 }
@@ -27,57 +31,41 @@ catch (PDOException $e)
   exit();
 }
 
-//userName check 
-/*try
-{
-  $sql = 'SELECT userName FROM users WHERE userName = :userName';
-  $s = $pdo->prepare($sql);
-  $s->bindValue(':userName',$_POST["userName"]);
-  $s->execute();
-  $userCheck = $s->fetchAll();
-}
-catch (PDOException $e)
-{*/
-	/*
-  $error = 'Error fetching user: ' . $e->getMessage();
-  include 'error.html.php';
-  exit();*/
-  /*$error = 'Error: No such user exists '. $e->getMessage(); // . $e->getMessage()
-  unset($_SESSION['userName']);
-  include 'invalidUser.error.html.php';
-  exit();
-}*/
-/*
-if($userCheck ==NULL){
-	
-  $error = 'Error: No such user exists'; // . $e->getMessage()
-  unset($_SESSION['userName']);
-  include 'invalidUser.error.html.php';
-}
-else {
 
-}*/
-/*
-try
-{
-  $sql = 'SELECT userName, pword FROM users WHERE userName = :userName';
-  $s = $pdo->prepare($sql);
-  $s->bindValue(':userName',$_POST["userName"]);
-  $s->bindValue(':pword',$_POST["pword"]);
-  $s->execute();
-  $userCheck = $s->fetchAll();
+if (isset($_POST['pwdHash'])){
+  $userlogin = $_POST['userName'];
+  $userpwd = $_POST['pwdHash'];
+
+  try
+  {
+    $pLoginSql = 'SELECT * FROM Users';
+    $s = $pdo->prepare($pLoginSql);  
+    $s->execute();
+    $playerResults  = $s->fetchAll();
+  }
+
+  catch (PDOException $e)
+  {
+    $error = 'Error fetching passwords: ' . $e->getMessage();
+     echo $error;
+  }
+
+  foreach ($playerResults as $user):
+      if ($userlogin==$user['userName']){
+        $userhash=$user['pword'];
+      }   
+  endforeach;
+  
+  if (password_verify($userpwd,$userhash)){
+    }
+    else {
+      header('Location: index.php?badPassword');
+      exit();
+    }
+
+
+
 }
-catch (PDOException $e)
-{
-	/*
-  $error = 'Error fetching user: ' . $e->getMessage();
-  include 'error.html.php';
-  exit();*/
-  /*$error = 'Error: No such user exists '. $e->getMessage(); // . $e->getMessage()
-  unset($_SESSION['userName']);
-  include 'invalidUser.error.html.php';
-  exit();
-}*/
 
 
 
@@ -177,7 +165,7 @@ padding:5px;
          <td>  
          <form action="?deleteChar" method="post">
           <input type="hidden" name="id" value="<?php echo $character['characterID']; ?>">
-         <input type="submit" value="delete">
+         <input type="submit" value="Delete">
         </form>
       </td>
       </tr>

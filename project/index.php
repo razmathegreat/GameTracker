@@ -39,6 +39,14 @@ catch (PDOException $e)
   exit();
 }
 
+if(isset($_GET['badPassword'])){
+  echo "Invalid Username or Password.  Please try again.";
+}
+
+if(isset($_GET['playerOnly'])){
+  echo "Your account does not have access to Game Master Tools.";
+}
+
 ?>
 	
 <!DOCTYPE html>
@@ -61,12 +69,12 @@ catch (PDOException $e)
  
 	
 	<p>Login as a Player here:</p><br>
-	<form action="playerView.php" method="post">
+	<form action="playerview.php" method="post">
       <div><label for="userName">User Name:
         <input type="text" name="userName" id="userName"></label>
       </div>
       <div><label for="pwdHash">Password:
-        <input type="text" name="pwdHash" id="pwdHash"></label>
+        <input type="password" name="pwdHash" id="pwdHash"></label>
       </div>
       <div><input type="submit" value="Login"></div>
     </form><br>
@@ -77,7 +85,7 @@ catch (PDOException $e)
         <input type="text" name="userName" id="userName"></label>
       </div>
       <div><label for="pwdHash">Password:
-        <input type="text" name="pwdHash" id="pwdHash"></label>
+        <input type="password" name="pwdHash" id="pwdHash"></label>
       </div>
       <div><input type="submit" value="Login"></div>
     </form><br>

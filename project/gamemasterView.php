@@ -9,6 +9,11 @@ if (isset($_GET['createNewCharacter']))
 if (!session_id()) {
     session_start();
   }
+
+//if coming from the login page clear out any existing userNames.
+if (isset($_POST['pwdHash'])){
+ unset($_SESSION['userName']);
+
 if (!isset($_SESSION['userName'])){
   $_SESSION['userName'] = $_POST["userName"];
 }
@@ -146,6 +151,45 @@ if (isset($_GET['deleteMonster']))
 
   header('Location: gamemasterView.php');
   exit();
+}
+
+if (isset($_POST['pwdHash'])){
+  $userlogin = $_POST['userName'];
+  $userpwd = $_POST['pwdHash'];
+
+  try
+  {
+    $gmLoginSql = 'SELECT * FROM Users';
+    $s = $pdo->prepare($gmLoginSql);  
+    $s->execute();
+    $gmResults  = $s->fetchAll();
+  }
+
+  catch (PDOException $e)
+  {
+    $error = 'Error fetching passwords: ' . $e->getMessage();
+     echo $error;
+  }
+
+  foreach ($gmResults as $user):
+      if ($userlogin==$user['userName']){
+        if($user['gmTools']==0){
+          header('Location: index.php?playerOnly');
+          exit();
+        }
+        $userhash=$user['pword'];
+      }   
+  endforeach;
+  
+  if (password_verify($userpwd,$userhash)){
+    }
+    else {
+      header('Location: index.php?badPassword');
+      exit();
+    }
+
+
+
 }
 
 if (isset($_GET['logOff'])){

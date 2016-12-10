@@ -2,7 +2,8 @@ create table Users (
 	userName		varChar(40)  not null,
 	firstName       varchar(40)  not null,
 	lastName        varchar(40)  not null,
-	pword			varchar(40)  not null,
+	pword			varchar(255)  not null,
+    gmTools 		BOOLEAN	     not null,	
     gmTools 		int,	
 	primary key (userName));
 
@@ -90,9 +91,9 @@ create table Battles (
 INSERT INTO Users
 (userName, firstName, lastName, pword, gmTools)
 values
-('JohnB', 'John', 'Benson', 'abcd', '1'),
-('AlyssaS', 'Alyssa', 'Smith', '2233', '1'),
-('MikeF', 'Mike', 'Flatley', '525252', '0');
+('JohnB', 'John', 'Benson', '$2y$10$gL3x21nvHgzcndxuDwaRBOYCUNcVmtTuSGJkidjjOUkZeE36MjXdq', '1'),     --pword='abcd'
+('AlyssaS', 'Alyssa', 'Smith', '$2y$10$zhK9kjzBd.3UG4KbDlX/XOg6bHFBYdqpERt4V9Zv3Wt.lsXUjdl0S', '1'), --pword = '2233'
+('MikeF', 'Mike', 'Flatley', '$2y$10$1d.D9w6uzr6ZLSI1BpIhDezlafx0WqzBn9KHxROQ0rha.dfH3H4RC', '0');      --pword='525252'
 
 INSERT INTO Characters 
 (charName, totalHP, strength, dexterity, wisdom, constitution, intelligence, charisma, createdBy)
